@@ -1,0 +1,58 @@
+#include "src/parser.h"
+
+struct B : public ParseInterface {
+    PARSE_SETUP;
+
+    PARSE(float) val1 = SINGLE();
+    PARSE(float) val2 = SINGLE();
+};
+
+struct A : public ParseInterface {
+    PARSE_SETUP;
+
+    PARSE(int) a = SINGLE();
+    PARSE(B) b = SINGLE();
+    PARSE(int) arr = COUNT(a());
+    PARSE(int) arr1 = UNTIL('|');
+    PARSE(char) c = SINGLE();
+    PARSE(int) arr2 = UNTIL('\n');
+    PARSE(int) arr3 = UNTIL('.');
+
+    // PARSE(int) c = SINGLE();
+    // PARSE(int) d = UNTIL("end");
+    // PARSE(int) e = UNTIL('\n');
+    // PARSE(int) f = COUNT(12);
+    // PARSE(int) g = COUNT(c() + d());
+    // PARSE(int) h = CALC_COUNT({count = c() + d();});
+    // SKIP(char, '_');
+    // SKIP(char) UNTIL("end");
+    // SKIP(char) COUNT(42);
+    // SKIP(int) CALC(g.size());
+    // SKIP(string) CALC_COUNT({count = g.size();});
+};
+
+std::istringstream s("3 2.5 3.14 4 5 6 1 2 3 | 4 5 6\n7 8 9");
+A a(s);
+
+int main() {
+	A aa = a;
+
+    std::cout << a.a() << std::endl;
+    std::cout << a.b().val1() << " " << a.b().val2() << std::endl;
+    std::cout << aa.b().val2() << std::endl;
+    for (auto a : aa.arr) {
+		std::cout << "ARR: " << a << std::endl;
+    }
+    for (auto a : aa.arr1) {
+		std::cout << "ARR1: " << a << std::endl;
+    }
+    for (auto a : aa.arr2) {
+		std::cout << "ARR2: " << a << std::endl;
+    }
+    for (auto a : aa.arr3) {
+		std::cout << "ARR3: " << a << std::endl;
+    }
+
+    return 0;
+}
+
