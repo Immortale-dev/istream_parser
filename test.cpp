@@ -16,7 +16,7 @@ struct A : public ParseInterface {
     PARSE(B) b = SINGLE();
     PARSE(int) arr = COUNT(a());
     PARSE(int) arr1 = UNTIL('|');
-    SKIP(char) = SINGLE('|');
+    SKIP(std::string) = SINGLE("|");
     PARSE(int) arr2 = THROUGH('\n');
     PARSE(int) arr3 = UNTIL_END();
 

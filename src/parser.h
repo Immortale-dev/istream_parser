@@ -60,7 +60,7 @@ template<typename T>
 class parse_it {
 	public:
 		parse_it(ParseInterface* obj) : source(obj->source) { process(); }
-		parse_it(ParseInterface* obj, T check) requires(!std::is_same_v<ParseInterface, T>) : source(obj->source) { process(); if(arr.back() != check) throw std::logic_error(std::format("Expected: \"{}\" but got \"{}\"", check, arr.back())); }
+		parse_it(ParseInterface* obj, T check) requires(!std::is_base_of_v<ParseInterface, T>) : source(obj->source) { process(); if(arr.back() != check) parse_unexpected_error(check, arr.back()); }
 		parse_it(ParseInterface* obj, std::function<size_t()> calc_length) : source(obj->source), length(calc_length()) { for(size_t i=0;i<length;i++) process(); }
 		template<typename U>
 		parse_it(ParseInterface* obj, parse_until<U> until, bool through=false) : source(obj->source) { process_until(until, through); }
@@ -80,6 +80,7 @@ class parse_it {
 		void parse() { size_t num = source->tellg(); arr.emplace_back(); *source >> arr.back(); if (source->fail()) parse_error(num); }
 		void emplace() { arr.emplace_back(*source); }
 		void parse_error(size_t num) { throw std::logic_error(std::format("Cannot parse \"{}\" at pos: {}", std::string(typeid(T).name()), std::to_string(num))); }
+		void parse_unexpected_error(T& expected, T& actual) { throw std::logic_error(std::format("Expected: \"{}\" but got \"{}\"", expected, actual)); }
 		void process() { if constexpr (!std::is_base_of_v<ParseInterface, T>) parse(); else emplace(); }
 		template<typename U>
 		void process_until(parse_until<U> &until, bool through) requires std::is_same_v<char, U> {
