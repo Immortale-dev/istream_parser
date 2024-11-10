@@ -1,6 +1,6 @@
 #include <sstream>
 
-#include "src/parser.h"
+#include "parser.h"
 
 struct B : public ParseInterface {
     PARSE_SETUP;

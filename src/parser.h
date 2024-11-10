@@ -49,8 +49,8 @@ struct parse_until {
 class ParseInterface {
 	template<typename T_ > friend class parse_it;
 	public:
-	    ParseInterface(std::istream &stream) : source(&stream) {}
-	    ParseInterface(const ParseInterface&) = default;
+		ParseInterface(std::istream &stream) : source(&stream) {}
+		ParseInterface(const ParseInterface&) = default;
 
 	private:
 		std::istream* source;
