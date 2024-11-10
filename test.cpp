@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "src/parser.h"
 
 struct B : public ParseInterface {
@@ -10,13 +12,13 @@ struct B : public ParseInterface {
 struct A : public ParseInterface {
     PARSE_SETUP;
 
-    PARSE(int) a = SINGLE();
+    PARSE(int) a = SINGLE(3);
     PARSE(B) b = SINGLE();
     PARSE(int) arr = COUNT(a());
     PARSE(int) arr1 = UNTIL('|');
-    PARSE(char) c = SINGLE();
-    PARSE(int) arr2 = UNTIL('\n');
-    PARSE(int) arr3 = UNTIL('.');
+    SKIP(char) = SINGLE('|');
+    PARSE(int) arr2 = THROUGH('\n');
+    PARSE(int) arr3 = UNTIL_END();
 
     // PARSE(int) c = SINGLE();
     // PARSE(int) d = UNTIL("end");
