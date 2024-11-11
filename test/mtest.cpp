@@ -19,18 +19,6 @@ struct A : public ParseInterface {
     SKIP(std::string) = SINGLE("|");
     PARSE(int) arr2 = THROUGH('\n');
     PARSE(int) arr3 = UNTIL_END();
-
-    // PARSE(int) c = SINGLE();
-    // PARSE(int) d = UNTIL("end");
-    // PARSE(int) e = UNTIL('\n');
-    // PARSE(int) f = COUNT(12);
-    // PARSE(int) g = COUNT(c() + d());
-    // PARSE(int) h = CALC_COUNT({count = c() + d();});
-    // SKIP(char, '_');
-    // SKIP(char) UNTIL("end");
-    // SKIP(char) COUNT(42);
-    // SKIP(int) CALC(g.size());
-    // SKIP(string) CALC_COUNT({count = g.size();});
 };
 
 std::istringstream s("3 2.5 3.14 4 5 6 1 2 3 | 4 5 6\n7 8 9");
@@ -57,4 +45,3 @@ int main() {
 
     return 0;
 }
-

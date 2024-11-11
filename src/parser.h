@@ -6,9 +6,9 @@
 #include <functional>
 #include <format>
 
-#define CONCAT(a, b) CONCAT_INNER(a, b)
-#define CONCAT_INNER(a, b) a ## b
-#define PRIVATE_FIELD_NAME() CONCAT(_private_field_, __COUNTER__)
+#define ISTREAM_PARSER_CONCAT(a, b) ISTREAM_PARSER_CONCAT_INNER(a, b)
+#define ISTREAM_PARSER_CONCAT_INNER(a, b) a ## b
+#define ISTREAM_PARSER_PRIVATE_FIELD_NAME() ISTREAM_PARSER_CONCAT(_private_field_, __COUNTER__)
 
 #define PARSE_SETUP \
 using ParseInterface::ParseInterface
@@ -17,7 +17,7 @@ using ParseInterface::ParseInterface
 parse_it<t>
 
 #define SKIP(t) private: \
-parse_it<t> PRIVATE_FIELD_NAME()
+parse_it<t> ISTREAM_PARSER_PRIVATE_FIELD_NAME()
 
 #define SINGLE(a) \
 {this, a}

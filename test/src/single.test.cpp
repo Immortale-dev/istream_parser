@@ -53,6 +53,10 @@ DESCRIBE("Given stream of individual values", {
 		s = new std::stringstream{"42 13.5 hello world"};
 	});
 
+	AFTER_EACH({
+		delete s;
+	});
+
 	IT("should parse individual values", {
 		IndVals p(*s);
 
@@ -60,6 +64,16 @@ DESCRIBE("Given stream of individual values", {
 		EXPECT(p.float_val()).toBe(13.5);
 		EXPECT(p.s1()).toBe("hello");
 		EXPECT(p.s2()).toBe("world");
+	});
+
+	IT("should copy parsed structure", {
+		IndVals p(*s);
+		auto copy = p;
+
+		EXPECT(copy.int_val()).toBe(42);
+		EXPECT(copy.float_val()).toBe(13.5);
+		EXPECT(copy.s1()).toBe("hello");
+		EXPECT(copy.s2()).toBe("world");
 	});
 
 	IT("should throw if the single value doesn't match", {
