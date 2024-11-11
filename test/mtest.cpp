@@ -2,14 +2,14 @@
 
 #include "parser.h"
 
-struct B : public ParseInterface {
+struct B : PARSE_INTERFACE {
     PARSE_SETUP;
 
     PARSE(float) val1 = SINGLE();
     PARSE(float) val2 = SINGLE();
 };
 
-struct A : public ParseInterface {
+DEFINE_PARSE_INTERFACE(A) {
     PARSE_SETUP;
 
     PARSE(int) a = SINGLE(3);
