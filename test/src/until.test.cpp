@@ -18,6 +18,11 @@ struct Vec_skip_until : ParseInterface {
 	SKIP(int) = UNTIL_END();
 };
 
+struct Char_until_end : ParseInterface {
+	PARSE_SETUP;
+	PARSE(char) arr = UNTIL_END();
+};
+
 SCENARIO_START
 
 DESCRIBE("Given stream of vector<int> | vector<int> \\n vector<int>", {
@@ -41,6 +46,13 @@ DESCRIBE("Given stream of vector<int> | vector<int> \\n vector<int>", {
 		Vec_skip_until p(*s);
 
 		EXPECT(p.arr).toBeIterableEqual({6,7,8,9,10});
+	});
+
+	IT("should parse full text", {
+		Char_until_end p(*s);
+
+		std::string str(p.arr.begin(), p.arr.end());
+		EXPECT(str).toBe("1 2 3 4 5 | 6 7 8 9 10 \n 11 12 13");
 	});
 });
 

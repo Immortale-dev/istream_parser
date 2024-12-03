@@ -12,7 +12,7 @@ struct Vec_count : ParseInterface {
 	PARSE(int) str_size = SINGLE();
 	SKIP(char) = SINGLE(':');
 	PARSE(std::string) str_arr = COUNT(str_size());
-	SKIP(char) = SINGLE(';');
+	SKIP(char) = THROUGH(';');
 	PARSE(int) rows = SINGLE();
 	SKIP(char) = SINGLE('x');
 	PARSE(int) cols = SINGLE();
@@ -38,7 +38,7 @@ struct Vec_with_mat : ParseInterface {
 	PARSE(int) str_size = SINGLE();
 	SKIP(char) = SINGLE(':');
 	PARSE(std::string) str_arr = COUNT(str_size());
-	SKIP(char) = SINGLE(';');
+	SKIP(char) = THROUGH(';');
 	PARSE(Part_mat) mat = SINGLE();
 };
 
@@ -47,7 +47,7 @@ struct Part_struct : ParseInterface {
 	PARSE(int) num = SINGLE();
 	SKIP(char) = SINGLE(',');
 	PARSE(std::string) str = SINGLE();
-	SKIP(char) = SINGLE(';');
+	SKIP(char) = THROUGH(';');
 };
 
 struct Vec_struct : ParseInterface {

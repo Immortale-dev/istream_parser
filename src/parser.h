@@ -64,7 +64,8 @@ namespace istream_parser {
 			bool is_empty_char(char c) { return c=='\n' || c=='\t' || c=='\r' || c==' '; };
 			char get_char() { char c; source->get(c); return c; }
 			void skip_empty(char but='.') { while(!source->eof() && source->peek() != but && is_empty_char(source->peek())) get_char(); }
-			void parse() { size_t num = source->tellg(); arr.emplace_back(); *source >> arr.back(); if (source->fail()) parse_error(num); }
+			void parse() { size_t num = source->tellg(); parse_item(); if (source->fail()) parse_error(num); }
+			void parse_item() { if constexpr (!std::is_same_v<char, T>) { arr.emplace_back(); *source >> arr.back(); } else { arr.push_back(get_char()); } }
 			void emplace() { arr.emplace_back(*source); }
 			void parse_error(size_t num) { throw std::logic_error(std::format("Cannot parse \"{}\" at pos: {}", std::string(typeid(T).name()), std::to_string(num))); }
 			void parse_unexpected_error(T& expected, T& actual) { throw std::logic_error(std::format("Expected: \"{}\" but got \"{}\"", expected, actual)); }
@@ -73,7 +74,7 @@ namespace istream_parser {
 			void process_until(parse_until<U> &until, bool through) requires std::is_same_v<char, U> {
 				while(1) {
 					if constexpr (!std::is_same_v<char, T>) skip_empty(until.value);
-					if (source->eof() || source->peek() == until.value) break;
+					if (source->peek() == until.value || source->eof()) break;
 					process();
 				}
 				if (through) get_char();
